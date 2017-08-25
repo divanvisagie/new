@@ -107,9 +107,17 @@ func downloadFile(projectName string, url string) {
 
 func main() {
 
-	projectName := "my-project-name-i-selected"
+	args := os.Args[1:]
+	if len(args) < 1 {
+		log.Fatalln("You need to pass in parameters")
+	}
 
-	url := getDownloadUrl("divanvisagie/kotlin-tested-seed")
+	if len(args) == 1 {
+		log.Fatalln("you need to provide a seed url")
+	}
+
+	projectName := args[0]
+	url := getDownloadUrl(args[1])
 
 	downloadFile(projectName, url)
 
