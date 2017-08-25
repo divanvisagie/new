@@ -2,7 +2,7 @@ builds:
   - main: main.go
   - binary: main
     goos:
-      - windows
+      # - windows
       - darwin
       - linux
     goarch:
@@ -12,3 +12,10 @@ archive:
   format_overrides:
     - goos: windows
       format: zip
+
+  files:
+    - install.sh
+
+
+
+  
