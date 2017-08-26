@@ -9,7 +9,11 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 )
+
+// Operating system path seperator;
+const SEPERATOR = string(os.PathSeparator)
 
 func getDownloadURL(userURL string) string {
 	// https://codeload.github.com/divanvisagie/postl/zip/master
@@ -20,6 +24,19 @@ func deleteFile(filename string) {
 	filename = ".\\" + filename
 	fmt.Println("Removing", filename)
 	os.Remove(filename)
+}
+
+func containsMaster(name string) {
+}
+
+func cleanPath(path string) string {
+	split := strings.Split(path, SEPERATOR)
+	if strings.Contains(split[1], "master") {
+		fmt.Println(">>>>")
+		split = append(split[:1], split[2:]...)
+	}
+
+	return strings.Join(split, SEPERATOR)
 }
 
 // Untar takes a destination path and a reader; a tar reader loops over the tarfile
@@ -52,8 +69,14 @@ func Untar(dst string, r io.Reader) error {
 			continue
 		}
 
+		fmt.Println("dst:", dst)
+
 		// the target location where the dir/file should be created
 		target := filepath.Join(dst, header.Name)
+
+		target = cleanPath(target)
+
+		fmt.Println("target: ", target)
 
 		// the following switch could also be done using fi.Mode(), not sure if there
 		// a benefit of using one vs. the other.
