@@ -4,13 +4,16 @@ new is a command to create projects off of github repos, it simply downloads a g
 [![Build Status](https://travis-ci.org/divanvisagie/new.svg?branch=master)](https://travis-ci.org/divanvisagie/new)
 
 
-### Windows 
+### Install 
 
-## Install 
+## Windows 
 ```
 scoop bucket add my-bucket https://github.com/divanvisagie/scoop-bucket
 scoop install new
 ```
+
+#Linux and Macos
+Download the tar.gz and run `install.sh`
 
 ## Run
 
