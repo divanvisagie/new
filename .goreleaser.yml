@@ -1,6 +1,6 @@
 builds:
   - main: main.go
-  - binary: main
+  - binary: new
     goos:
       - windows
       - darwin
