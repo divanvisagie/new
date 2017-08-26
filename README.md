@@ -7,8 +7,10 @@ new is a command to create projects off of github repos, it simply downloads a g
 ### Install 
 
 ## Windows 
+First install [scoop](scoop.sh)
+
 ```
-scoop bucket add my-bucket https://github.com/divanvisagie/scoop-bucket
+scoop bucket add divanvisagie https://github.com/divanvisagie/scoop-bucket
 scoop install new
 ```
 
