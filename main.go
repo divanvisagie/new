@@ -20,22 +20,14 @@ func getDownloadURL(userURL string) string {
 	return fmt.Sprintf("https://codeload.github.com/%s/tar.gz/master", userURL)
 }
 
-func deleteFile(filename string) {
-	filename = ".\\" + filename
-	fmt.Println("Removing", filename)
-	os.Remove(filename)
-}
-
 func containsMaster(name string) {
 }
 
 func cleanPath(path string) string {
 	split := strings.Split(path, SEPERATOR)
 	if strings.Contains(split[1], "master") {
-		fmt.Println(">>>>")
 		split = append(split[:1], split[2:]...)
 	}
-
 	return strings.Join(split, SEPERATOR)
 }
 
@@ -48,6 +40,8 @@ func Untar(dst string, r io.Reader) error {
 	if err != nil {
 		return err
 	}
+
+	fmt.Println(">", gzr.Header.Name)
 
 	tr := tar.NewReader(gzr)
 
@@ -96,6 +90,8 @@ func Untar(dst string, r io.Reader) error {
 		// if it's a file create it
 		case tar.TypeReg:
 			f, err := os.OpenFile(target, os.O_CREATE|os.O_RDWR, os.FileMode(header.Mode))
+
+			fmt.Println(">>", f.Name())
 			if err != nil {
 				return err
 			}
@@ -121,6 +117,14 @@ func downloadFile(projectName string, url string) {
 
 }
 
+func cleanUp(projectName string) {
+	seperator := "/"
+	nameOnly := strings.Split(projectName, seperator)[1]
+	fmt.Println("Deleting", nameOnly)
+	os.RemoveAll(nameOnly)
+	os.Remove(nameOnly)
+}
+
 func main() {
 
 	args := os.Args[1:]
@@ -133,9 +137,10 @@ func main() {
 	}
 
 	projectName := args[0]
-	url := getDownloadURL(args[1])
+	githubName := args[1]
+	url := getDownloadURL(githubName)
 
 	downloadFile(projectName, url)
-
+	// cleanUp(githubName)
 	fmt.Println("URL: ", url)
 }
