@@ -15,19 +15,3 @@ archive:
 
   files:
     - install.sh
-
-fpm:
-  vendor: Divan Visagie
-  homepage: https://github.com/divanvisagie/new
-  maintainer: Divan Visagie <me@dvisagie.com>
-  
-  description: new is a command to create projects off of github repos, it simply downloads a github repository and extracts it to a directory with your specified project name
-
-  license: Apache 2.0
-
-  formats:
-    - deb
-    - rpm
-
-  dependencies:
-    - git
