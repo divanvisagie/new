@@ -7,6 +7,10 @@ new is a command to create projects off of github repos, it simply downloads a g
 ### Install 
 
 ## Windows 
+
+### Requirements 
+ - The git command must be accessable from the terminal you execute `new` in
+
 First install [scoop](scoop.sh)
 
 ```

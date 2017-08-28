@@ -1,128 +1,50 @@
 package main
 
 import (
-	"archive/tar"
-	"compress/gzip"
 	"fmt"
-	"io"
 	"log"
-	"net/http"
 	"os"
-	"path/filepath"
+	"os/exec"
 	"strings"
 )
 
-// Operating system path seperator;
-const SEPERATOR = string(os.PathSeparator)
+const SEPARATOR = string(os.PathSeparator)
 
-func getDownloadURL(userURL string) string {
+func getGitArgs(githubName string, projectName string) []string {
+
+	dir, _ := os.Getwd()
+
+	target := strings.Join([]string{dir, projectName}, SEPARATOR)
 	// https://codeload.github.com/divanvisagie/postl/zip/master
-	return fmt.Sprintf("https://codeload.github.com/%s/tar.gz/master", userURL)
-}
 
-func containsMaster(name string) {
-}
-
-func cleanPath(path string) string {
-	split := strings.Split(path, SEPERATOR)
-	if strings.Contains(split[1], "master") {
-		split = append(split[:1], split[2:]...)
+	arguments := []string{
+		"clone",
+		"--depth=1",
+		fmt.Sprintf("https://github.com/%s.git", githubName),
+		target,
 	}
-	return strings.Join(split, SEPERATOR)
+
+	return arguments
 }
 
-// Untar takes a destination path and a reader; a tar reader loops over the tarfile
-// creating the file structure at 'dst' along the way, and writing any files
-func Untar(dst string, r io.Reader) error {
-
-	gzr, err := gzip.NewReader(r)
-	defer gzr.Close()
+func runCommand(command string, arguments []string) string {
+	commandOutput, err := exec.Command(command, arguments...).Output()
 	if err != nil {
-		return err
+		return err.Error()
 	}
-
-	fmt.Println(">", gzr.Header.Name)
-
-	tr := tar.NewReader(gzr)
-
-	for {
-		header, err := tr.Next()
-
-		switch {
-
-		// if no more files are found return
-		case err == io.EOF:
-			return nil
-
-		// return any other error
-		case err != nil:
-			return err
-
-		// if the header is nil, just skip it (not sure how this happens)
-		case header == nil:
-			continue
-		}
-
-		fmt.Println("dst:", dst)
-
-		// the target location where the dir/file should be created
-		target := filepath.Join(dst, header.Name)
-
-		target = cleanPath(target)
-
-		fmt.Println("target: ", target)
-
-		// the following switch could also be done using fi.Mode(), not sure if there
-		// a benefit of using one vs. the other.
-		// fi := header.FileInfo()
-
-		// check the file type
-		switch header.Typeflag {
-
-		// if its a dir and it doesn't exist create it
-		case tar.TypeDir:
-			if _, err := os.Stat(target); err != nil {
-				if err := os.MkdirAll(target, 0755); err != nil {
-					return err
-				}
-			}
-
-		// if it's a file create it
-		case tar.TypeReg:
-			f, err := os.OpenFile(target, os.O_CREATE|os.O_RDWR, os.FileMode(header.Mode))
-
-			fmt.Println(">>", f.Name())
-			if err != nil {
-				return err
-			}
-			defer f.Close()
-
-			// copy over contents
-			if _, err := io.Copy(f, tr); err != nil {
-				return err
-			}
-		}
-	}
+	return string(commandOutput)
 }
 
-func downloadFile(projectName string, url string) {
+func removeGitInDirectory(directoryName string) {
+	path := string(strings.Join([]string{directoryName, ".git"}, SEPARATOR))
 
-	response, getErr := http.Get(url)
-	if getErr != nil {
-		log.Fatalln(getErr.Error())
+	dir, _ := os.Getwd()
+	target := strings.Join([]string{dir, path}, SEPARATOR)
+	err := os.RemoveAll(target)
+
+	if err != nil {
+		log.Fatalln("Failed to delete .git directory")
 	}
-	defer response.Body.Close()
-
-	Untar(projectName, response.Body)
-
-}
-
-func cleanUp(projectName string) {
-	seperator := "/"
-	nameOnly := strings.Split(projectName, seperator)[1]
-	fmt.Println("Deleting", nameOnly)
-	os.RemoveAll(nameOnly)
-	os.Remove(nameOnly)
 }
 
 func main() {
@@ -138,9 +60,12 @@ func main() {
 
 	projectName := args[0]
 	githubName := args[1]
-	url := getDownloadURL(githubName)
 
-	downloadFile(projectName, url)
-	// cleanUp(githubName)
-	fmt.Println("URL: ", url)
+	commandArgs := getGitArgs(githubName, projectName)
+
+	commandOutput := runCommand("git", commandArgs)
+
+	fmt.Println(commandOutput)
+
+	removeGitInDirectory(projectName)
 }
