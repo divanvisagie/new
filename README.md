@@ -11,7 +11,7 @@ new is a command to create projects off of github repos, it simply downloads a g
 ### Requirements 
  - The git command must be accessable from the terminal you execute `new` in
 
-First install [scoop](scoop.sh)
+First install [scoop](http://scoop.sh/)
 
 ```
 scoop bucket add divanvisagie https://github.com/divanvisagie/scoop-bucket
@@ -29,5 +29,8 @@ To run , simply type the new command, the name of the project you want to genera
 new myProjectName divanvisagie/kotlin-tested-seed
 ```
 
+
+## License
+Apache 2.0
 
 
