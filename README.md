@@ -18,7 +18,16 @@ scoop bucket add divanvisagie https://github.com/divanvisagie/scoop-bucket
 scoop install new
 ```
 
-#Linux and Macos
+## macOS
+
+First install [homebrew](https://brew.sh/)
+
+```
+brew install divanvisagie/homebrew-tap/new
+```
+
+
+# Linux
 Download the tar.gz and run `install.sh`
 
 ## Run
