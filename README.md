@@ -6,10 +6,10 @@ new is a command to create projects off of github repos, it simply downloads a g
 
 ## Install 
 
-### Windows 
-
 #### Requirements 
  - The git command must be accessable from the terminal you execute `new` in
+
+### Windows 
 
 First install [scoop](http://scoop.sh/)
 
@@ -20,15 +20,33 @@ scoop install new
 
 ### macOS
 
+#### Homebrew
+
 First install [homebrew](https://brew.sh/)
 
 ```
 brew install divanvisagie/homebrew-tap/new
 ```
 
+#### Manual Install 
+
+Download the tar.gz and run `install.sh`
+
 
 ### Linux
+#### Linuxbrew
+
+First install [linuxbrew](http://linuxbrew.sh/)
+
+```
+brew install divanvisagie/linuxbrew-tap/new
+```
+
+#### Manual Install
+
 Download the tar.gz and run `install.sh`
+
+
 
 ## Run
 
