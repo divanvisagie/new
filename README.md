@@ -27,7 +27,7 @@ brew install divanvisagie/homebrew-tap/new
 ```
 
 
-# Linux
+## Linux
 Download the tar.gz and run `install.sh`
 
 ## Run
