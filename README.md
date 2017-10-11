@@ -4,11 +4,11 @@ new is a command to create projects off of github repos, it simply downloads a g
 [![Build Status](https://travis-ci.org/divanvisagie/new.svg?branch=master)](https://travis-ci.org/divanvisagie/new)
 
 
-### Install 
+## Install 
 
-## Windows 
+### Windows 
 
-### Requirements 
+#### Requirements 
  - The git command must be accessable from the terminal you execute `new` in
 
 First install [scoop](http://scoop.sh/)
@@ -18,7 +18,7 @@ scoop bucket add divanvisagie https://github.com/divanvisagie/scoop-bucket
 scoop install new
 ```
 
-## macOS
+### macOS
 
 First install [homebrew](https://brew.sh/)
 
@@ -27,7 +27,7 @@ brew install divanvisagie/homebrew-tap/new
 ```
 
 
-## Linux
+### Linux
 Download the tar.gz and run `install.sh`
 
 ## Run
