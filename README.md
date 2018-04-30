@@ -55,9 +55,3 @@ To run , simply type the new command, the name of the project you want to genera
 ```sh
 new myProjectName divanvisagie/kotlin-tested-seed
 ```
-
-
-## License
-Apache 2.0
-
-
