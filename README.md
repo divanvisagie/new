@@ -25,6 +25,7 @@ scoop install new
 First install [homebrew](https://brew.sh/)
 
 ```
+brew tap divanvisagie/homebrew-tap
 brew install divanvisagie/homebrew-tap/new
 ```
 
