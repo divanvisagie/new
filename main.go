@@ -37,7 +37,7 @@ func main() {
 
 	default:
 
-		commandArgs := git.GetGitArgs(*seed, *name)
+		commandArgs := git.GetArgs(*seed, *name)
 		err := git.RunCommand(commandArgs)
 		if err != nil {
 			fmt.Printf("Failed due to error: %s\n", err.Error())

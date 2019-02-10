@@ -16,8 +16,8 @@ type Args struct {
 	target string
 }
 
-// GetGitArgs gets the arguments required for git
-func GetGitArgs(projectURL string, projectName string) *Args {
+// GetArgs gets the arguments required for git
+func GetArgs(projectURL string, projectName string) *Args {
 
 	dir, _ := os.Getwd()
 
@@ -29,13 +29,6 @@ func GetGitArgs(projectURL string, projectName string) *Args {
 		url = fmt.Sprintf("https://github.com/%s.git", projectURL)
 	}
 
-	// arguments := []string{
-	// 	"clone",
-	// 	"--depth=1",
-	// 	url,
-	// 	target,
-	// }
-
 	fmt.Printf("Creating %s from %s \n", projectName, url)
 
 	return &Args{
@@ -44,6 +37,7 @@ func GetGitArgs(projectURL string, projectName string) *Args {
 	}
 }
 
+// RunCommand runs the git command with the specified args
 func RunCommand(args *Args) error {
 
 	_, err := git.PlainClone(args.target, false, &git.CloneOptions{
