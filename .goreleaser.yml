@@ -15,6 +15,7 @@ archive:
 
 brew:
   name: new
+  description: "generate projects from git repositories"
 
   # Repository to push the tap to.
   github:
@@ -24,8 +25,15 @@ brew:
   homepage: "https://github.com/divanvisagie/new"
 
 scoop:
+  description: "generate projects from git repositories"
   bucket:
     owner: divanvisagie
     name: scoop-bucket
 
   homepage: "https://github.com/divanvisagie/new"
+
+nfpm:
+  homepage: "https://github.com/divanvisagie/new"
+  description: "generate projects from git repositories"
+  formats:
+      - deb
