@@ -8,35 +8,32 @@ Future plans include support for name replacement and anything else that seems u
 [![Build Status](https://travis-ci.org/divanvisagie/new.svg?branch=master)](https://travis-ci.org/divanvisagie/new)
 
 
-## Install 
+## Installation Options
 
-#### Requirements 
- - The git command must be accessable from the terminal you execute `new` in
+### Go get
+If you have golang installed , you can simply run the following on any platform:
+
+```sh
+go get github.com/divanvisagie/new
+```
 
 ### Windows 
 
 First install [scoop](http://scoop.sh/)
 
-```
+```sh
 scoop bucket add divanvisagie https://github.com/divanvisagie/scoop-bucket
 scoop install new
 ```
 
 ### macOS
 
-#### Homebrew
-
 First install [homebrew](https://brew.sh/)
 
-```
+```sh
 brew tap divanvisagie/homebrew-tap
 brew install divanvisagie/homebrew-tap/new
 ```
-
-#### Manual Install
-
-Download the latest [tar.gz](https://github.com/divanvisagie/new/releases) and run `install.sh`
-
 
 ### Linux
 
@@ -44,12 +41,9 @@ Download the appropriate package from [here](https://github.com/divanvisagie/new
 
 Use either the debian package or the tarball
 
+### Manual Installation
 
-#### Manual Install
-
-Download the tar.gz and run `install.sh`
-
-
+Download the latest [tar.gz](https://github.com/divanvisagie/new/releases) and run `install.sh`
 
 ## Run
 
