@@ -29,19 +29,17 @@ brew tap divanvisagie/homebrew-tap
 brew install divanvisagie/homebrew-tap/new
 ```
 
-#### Manual Install 
+#### Manual Install
 
-Download the tar.gz and run `install.sh`
+Download the latest [tar.gz](https://github.com/divanvisagie/new/releases) and run `install.sh`
 
 
 ### Linux
-#### Linuxbrew
 
-First install [linuxbrew](http://linuxbrew.sh/)
+Download the appropriate package from [here](https://github.com/divanvisagie/new/releases).
 
-```
-brew install divanvisagie/linuxbrew-tap/new
-```
+Use either the debian package or the tarball
+
 
 #### Manual Install
 
