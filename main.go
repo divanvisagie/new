@@ -4,46 +4,13 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"os/exec"
 	"strings"
 
+	"github.com/divanvisagie/new/git"
 	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
 
 const separator = string(os.PathSeparator)
-
-func getGitArgs(projectURL string, projectName string) []string {
-
-	dir, _ := os.Getwd()
-
-	// https://codeload.github.com/divanvisagie/postl/zip/master
-	target := strings.Join([]string{dir, projectName}, separator)
-	var url string
-	if strings.ContainsRune(projectURL, ':') {
-		url = projectURL
-	} else {
-		url = fmt.Sprintf("https://github.com/%s.git", projectURL)
-	}
-
-	arguments := []string{
-		"clone",
-		"--depth=1",
-		url,
-		target,
-	}
-
-	fmt.Printf("Creating %s from %s \n", projectName, url)
-
-	return arguments
-}
-
-func runCommand(command string, arguments []string) (string, error) {
-	commandOutput, err := exec.Command(command, arguments...).Output()
-	if err != nil {
-		return "", err
-	}
-	return string(commandOutput), nil
-}
 
 func removeGitInDirectory(directoryName string) {
 	path := string(strings.Join([]string{directoryName, ".git"}, separator))
@@ -70,8 +37,8 @@ func main() {
 
 	default:
 
-		commandArgs := getGitArgs(*seed, *name)
-		_, err := runCommand("git", commandArgs)
+		commandArgs := git.GetGitArgs(*seed, *name)
+		err := git.RunCommand(commandArgs)
 		if err != nil {
 			fmt.Printf("Failed due to error: %s\n", err.Error())
 		}
