@@ -25,3 +25,9 @@ brew:
   
   homepage: "https://github.com/divanvisagie/new"
 
+scoop:
+  bucket:
+    owner: divanvisagie
+    name: scoop-bucket
+
+  homepage: "https://github.com/divanvisagie/new"
