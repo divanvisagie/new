@@ -8,14 +8,14 @@ import (
 	"strings"
 )
 
-const SEPARATOR = string(os.PathSeparator)
+const separator = string(os.PathSeparator)
 
 func getGitArgs(githubName string, projectName string) []string {
 
 	dir, _ := os.Getwd()
 
-	target := strings.Join([]string{dir, projectName}, SEPARATOR)
 	// https://codeload.github.com/divanvisagie/postl/zip/master
+	target := strings.Join([]string{dir, projectName}, separator)
 
 	arguments := []string{
 		"clone",
@@ -36,10 +36,10 @@ func runCommand(command string, arguments []string) string {
 }
 
 func removeGitInDirectory(directoryName string) {
-	path := string(strings.Join([]string{directoryName, ".git"}, SEPARATOR))
+	path := string(strings.Join([]string{directoryName, ".git"}, separator))
 
 	dir, _ := os.Getwd()
-	target := strings.Join([]string{dir, path}, SEPARATOR)
+	target := strings.Join([]string{dir, path}, separator)
 	err := os.RemoveAll(target)
 
 	if err != nil {
@@ -62,7 +62,6 @@ func main() {
 	githubName := args[1]
 
 	commandArgs := getGitArgs(githubName, projectName)
-
 	commandOutput := runCommand("git", commandArgs)
 
 	fmt.Println(commandOutput)
