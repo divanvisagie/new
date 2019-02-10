@@ -6,33 +6,43 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+
+	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
 
 const separator = string(os.PathSeparator)
 
-func getGitArgs(githubName string, projectName string) []string {
+func getGitArgs(projectURL string, projectName string) []string {
 
 	dir, _ := os.Getwd()
 
 	// https://codeload.github.com/divanvisagie/postl/zip/master
 	target := strings.Join([]string{dir, projectName}, separator)
+	var url string
+	if strings.ContainsRune(projectURL, ':') {
+		url = projectURL
+	} else {
+		url = fmt.Sprintf("https://github.com/%s.git", projectURL)
+	}
 
 	arguments := []string{
 		"clone",
 		"--depth=1",
-		fmt.Sprintf("https://github.com/%s.git", githubName),
+		url,
 		target,
 	}
+
+	fmt.Printf("Creating %s from %s \n", projectName, url)
 
 	return arguments
 }
 
-func runCommand(command string, arguments []string) string {
+func runCommand(command string, arguments []string) (string, error) {
 	commandOutput, err := exec.Command(command, arguments...).Output()
 	if err != nil {
-		return err.Error()
+		return "", err
 	}
-	return string(commandOutput)
+	return string(commandOutput), nil
 }
 
 func removeGitInDirectory(directoryName string) {
@@ -47,24 +57,25 @@ func removeGitInDirectory(directoryName string) {
 	}
 }
 
+var (
+	app = kingpin.New("new", "generate projects from git repositories")
+
+	name = app.Arg("project name", "Name of the new project").Required().String()
+	seed = app.Arg("repository", "Custom git repo URL or GitHub <username>/<project>").Required().String()
+)
+
 func main() {
 
-	args := os.Args[1:]
-	if len(args) < 1 {
-		log.Fatalln("You need to pass in parameters")
+	switch kingpin.MustParse(app.Parse(os.Args[1:])) {
+
+	default:
+
+		commandArgs := getGitArgs(*seed, *name)
+		_, err := runCommand("git", commandArgs)
+		if err != nil {
+			fmt.Printf("Failed due to error: %s\n", err.Error())
+		}
+
+		removeGitInDirectory(*name)
 	}
-
-	if len(args) == 1 {
-		log.Fatalln("you need to provide a seed url")
-	}
-
-	projectName := args[0]
-	githubName := args[1]
-
-	commandArgs := getGitArgs(githubName, projectName)
-	commandOutput := runCommand("git", commandArgs)
-
-	fmt.Println(commandOutput)
-
-	removeGitInDirectory(projectName)
 }
