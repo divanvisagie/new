@@ -8,4 +8,5 @@ script:
   - rm main
  
 after_success:
+  - go get "golang.org/x/sys/windows"
   - test -n "$TRAVIS_TAG" && curl -sL https://git.io/goreleaser | bash
