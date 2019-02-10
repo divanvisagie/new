@@ -1,5 +1,9 @@
 # new
-new is a command to create projects off of github repos, it simply downloads a github repository and extracts it to a directory with your specified project name
+Generate new projects from git repositories
+
+new is a command to create new projects based on existing git repos. It simply shallow clones a repository to a directory with your specified new project name, and cleans up the git files like they were never there.
+
+Future plans include support for name replacement and anything else that seems useful, feedback is appreciated.
 
 [![Build Status](https://travis-ci.org/divanvisagie/new.svg?branch=master)](https://travis-ci.org/divanvisagie/new)
 
