@@ -1,0 +1,5 @@
+replace:
+  strings:
+    - match: '{{CHEESE}}'
+      description: Your pojects favorite type of cheese
+

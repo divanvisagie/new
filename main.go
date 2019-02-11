@@ -1,10 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/divanvisagie/new/prompt"
 
 	"github.com/divanvisagie/new/git"
 	kingpin "gopkg.in/alecthomas/kingpin.v2"
@@ -31,18 +34,25 @@ var (
 	seed = app.Arg("repository", "Custom git repo URL or GitHub <username>/<project>").Required().String()
 )
 
-func main() {
+func fetchRepository(seed string, name string, p func(string, string) string) {
+	commandArgs := git.GetArgs(seed, name)
+	err := git.RunCommand(commandArgs)
+	if err != nil {
+		fmt.Printf("Failed due to error: %s\n", err.Error())
+	}
+	removeGitInDirectory(name)
+	prompt.ProcessForTarget(name, p)
+}
 
+func main() {
 	switch kingpin.MustParse(app.Parse(os.Args[1:])) {
 
 	default:
-
-		commandArgs := git.GetArgs(*seed, *name)
-		err := git.RunCommand(commandArgs)
-		if err != nil {
-			fmt.Printf("Failed due to error: %s\n", err.Error())
-		}
-
-		removeGitInDirectory(*name)
+		fetchRepository(*seed, *name, func(name string, description string) string {
+			reader := bufio.NewReader(os.Stdin)
+			fmt.Printf("Enter replacement text for \n    text       : %s\n    description: %s\n> ", name, description)
+			text, _ := reader.ReadString('\n')
+			return text
+		})
 	}
 }
