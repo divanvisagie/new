@@ -1,5 +1,7 @@
 # new
-[![Build Status](https://travis-ci.org/divanvisagie/new.svg?branch=master)](https://travis-ci.org/divanvisagie/new)
+[![Build Status](https://img.shields.io/travis/divanvisagie/new/master.svg?style=for-the-badge)](https://travis-ci.org/divanvisagie/new)
+[![Release](https://img.shields.io/github/release/divanvisagie/new.svg?style=for-the-badge)](https://github.com/divanvisagie/new/releases/latest)
+[![Powered By: GoReleaser](https://img.shields.io/badge/powered%20by-goreleaser-green.svg?style=for-the-badge)](https://github.com/goreleaser)
 
 Generate new projects from git repositories
 
