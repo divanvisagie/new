@@ -6,6 +6,7 @@ import (
 	"os"
 	"path"
 
+	"github.com/divanvisagie/new/replace"
 	"gopkg.in/yaml.v2"
 )
 
@@ -51,6 +52,7 @@ func ProcessForTarget(target string, fetchUserInput func(string, string) string)
 
 	for _, x := range config.Replace.Strings {
 		with := fetchUserInput(x.Match, x.Description)
-		fmt.Printf("Replacing string %v with %v", x.Match, with)
+		fmt.Printf("Replacing string %v with %v...", x.Match, with)
+		replace.StartProcessWithString(x.Match, target, with)
 	}
 }
