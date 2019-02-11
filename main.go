@@ -7,9 +7,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/divanvisagie/new/prompt"
-
 	"github.com/divanvisagie/new/git"
+	"github.com/divanvisagie/new/prompt"
 	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
 
@@ -50,8 +49,12 @@ func main() {
 	default:
 		fetchRepository(*seed, *name, func(name string, description string) string {
 			reader := bufio.NewReader(os.Stdin)
-			fmt.Printf("Enter replacement text for \n    text       : %s\n    description: %s\n> ", name, description)
+			fmt.Printf("\nEnter replacement text for %s\n\n    text       : %s\n    description: %s\n\n> ", name, name, description)
 			text, _ := reader.ReadString('\n')
+			text = strings.TrimSpace(text)
+			if text == "" {
+				text = name
+			}
 			return text
 		})
 	}

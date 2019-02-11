@@ -45,14 +45,23 @@ func replaceInstancesInFile(targetFile string, instance string, with string) str
 	return ans
 }
 
+func overwriteFileWith(path string, with string) {
+	err := ioutil.WriteFile(path, []byte(with), 0644)
+	if err != nil {
+		fmt.Printf("Error %s writing to file %s", err.Error(), path)
+	}
+}
+
 // StartProcessWithString starts the procces of replacing occurences of a string
 func StartProcessWithString(targetString string, targetFolder string, with string) {
 	files := getAllFilePathsInDirectory(targetFolder)
 	for _, filePath := range files {
-		replacedIn := replaceInstancesInFile(filePath, targetString, with)
-		if replacedIn != "" {
-			fmt.Printf("For file %s\n", filePath)
-			fmt.Printf("Replaced:\n\n%s\n\n", replacedIn)
+		replacementText := replaceInstancesInFile(filePath, targetString, with)
+		if replacementText != "" {
+			fmt.Printf("For file %s replacing '%s' with '%s'\n", filePath, targetString, with)
+			fmt.Printf("Replaced:\n\n%s\n\n", replacementText)
+
+			overwriteFileWith(filePath, replacementText)
 		}
 	}
 }

@@ -31,12 +31,12 @@ func readYamlFile(configFilePath string) *NewConfig {
 
 	b, err := ioutil.ReadFile(configFilePath)
 	if err != nil {
-		fmt.Printf("xxxxxxxxxxxxxxxxxxxxx %v\n", err)
+		fmt.Printf("readYamlFile error: %v\n", err)
 	}
 
 	err = yaml.Unmarshal(b, &config)
 	if err != nil {
-		fmt.Printf("xxxxxxxxxxxxxx Couldnt unmarshall")
+		fmt.Printf("Couldnt unmarshall: %s", err.Error())
 	}
 
 	return &config
@@ -52,7 +52,11 @@ func ProcessForTarget(target string, fetchUserInput func(string, string) string)
 
 	for _, x := range config.Replace.Strings {
 		with := fetchUserInput(x.Match, x.Description)
-		fmt.Printf("Replacing string %v with %v...", x.Match, with)
+		if x.Match == with {
+			fmt.Printf("Skipped replacement for %s\n", x.Match)
+			return
+		}
+		fmt.Printf("Replacing string %v with %v...\n", x.Match, with)
 		replace.StartProcessWithString(x.Match, target, with)
 	}
 }
