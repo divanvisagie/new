@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path"
 	"strings"
 
 	"github.com/divanvisagie/new/git"
@@ -15,14 +16,23 @@ import (
 const separator = string(os.PathSeparator)
 
 func removeGitInDirectory(directoryName string) {
-	path := string(strings.Join([]string{directoryName, ".git"}, separator))
+	gitPath := string(strings.Join([]string{directoryName, ".git"}, separator))
 
 	dir, _ := os.Getwd()
-	target := strings.Join([]string{dir, path}, separator)
+	target := strings.Join([]string{dir, gitPath}, separator)
 	err := os.RemoveAll(target)
 
 	if err != nil {
 		log.Fatalln("Failed to delete .git directory")
+	}
+}
+
+func removeConfigFileInDirectory(directoryName string) {
+	dir, _ := os.Getwd()
+	newConfigFile := path.Join(dir, directoryName, ".new.yml")
+	err := os.Remove(newConfigFile)
+	if err != nil {
+		log.Fatalf("Could not delete %s because %s\n", newConfigFile, err)
 	}
 }
 
@@ -41,6 +51,7 @@ func fetchRepository(seed string, name string, p func(string, string) string) {
 	}
 	removeGitInDirectory(name)
 	prompt.ProcessForTarget(name, p)
+	defer removeConfigFileInDirectory(name)
 }
 
 func main() {

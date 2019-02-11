@@ -9,6 +9,10 @@ import (
 	"strings"
 )
 
+func shouldIgnore(info os.FileInfo) bool {
+	return info.IsDir() || info.Name() == ".new.yml"
+}
+
 func getAllFilePathsInDirectory(targetFolder string) []string {
 	var paths []string
 	err := filepath.Walk(targetFolder,
@@ -16,8 +20,7 @@ func getAllFilePathsInDirectory(targetFolder string) []string {
 			if err != nil {
 				return err
 			}
-			fmt.Println(path, info.Size())
-			if !info.IsDir() {
+			if !shouldIgnore(info) {
 				paths = append(paths, path)
 			}
 			return nil
@@ -35,8 +38,6 @@ func replaceInstancesInFile(targetFile string, instance string, with string) str
 		fmt.Printf("Error: %s while replacing instances in file: %s", err.Error(), targetFile)
 	}
 	str := string(bytes)
-
-	fmt.Println(str)
 
 	if strings.Contains(str, instance) {
 		ans = strings.Replace(str, instance, with, -1)
@@ -58,8 +59,8 @@ func StartProcessWithString(targetString string, targetFolder string, with strin
 	for _, filePath := range files {
 		replacementText := replaceInstancesInFile(filePath, targetString, with)
 		if replacementText != "" {
-			fmt.Printf("For file %s replacing '%s' with '%s'\n", filePath, targetString, with)
-			fmt.Printf("Replaced:\n\n%s\n\n", replacementText)
+			// fmt.Printf("For file %s replacing '%s' with '%s'\n", filePath, targetString, with)
+			// fmt.Printf("Replaced:\n\n%s\n\n", replacementText)
 
 			overwriteFileWith(filePath, replacementText)
 		}
