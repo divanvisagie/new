@@ -42,6 +42,12 @@ func readYamlFile(configFilePath string) *NewConfig {
 	return &config
 }
 
+type replacement struct {
+	match           string
+	filePath        string
+	replacementText string
+}
+
 // ProcessForTarget searches the target directory for .new.yml and processes it
 func ProcessForTarget(target string, fetchUserInput func(string, string) string) {
 	const separator = string(os.PathSeparator)
@@ -50,13 +56,22 @@ func ProcessForTarget(target string, fetchUserInput func(string, string) string)
 
 	config := readYamlFile(yamlFilePath)
 
+	var replacements []replacement
 	for _, x := range config.Replace.Strings {
 		with := fetchUserInput(x.Match, x.Description)
 		if x.Match == with {
 			fmt.Printf("Skipped replacement for %s\n", x.Match)
 			return
 		}
-		fmt.Printf("Replacing string %v with %v...\n", x.Match, with)
-		replace.StartProcessWithString(x.Match, target, with)
+		replacements = append(replacements, replacement{
+			match:           x.Match,
+			filePath:        target,
+			replacementText: with,
+		})
+	}
+
+	for _, r := range replacements {
+		fmt.Printf("Replacing string %v with %v...\n", r.match, r.replacementText)
+		replace.StartProcessWithString(r.match, r.filePath, r.replacementText)
 	}
 }
