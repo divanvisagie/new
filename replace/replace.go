@@ -6,8 +6,62 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
+
+	"github.com/fatih/color"
+	"github.com/kylelemons/godebug/diff"
 )
+
+func osFriendlyNewlineSplit(str string) []string {
+	return strings.Split(strings.Replace(str, "\r\n", "\n", -1), "\n")
+}
+
+func colorDiffLine(str string) string {
+	add, _ := regexp.MatchString(`^\+.*`, str)
+	subtract, _ := regexp.MatchString(`^\-.*`, str)
+
+	if add {
+		return color.GreenString(str)
+	}
+
+	if subtract {
+		return color.RedString(str)
+	}
+
+	return str
+}
+
+func chunkContains(chunk []string, match string) bool {
+	for _, line := range chunk {
+		if strings.Contains(line, match) {
+			return true
+		}
+	}
+	return false
+}
+
+func findInterestingChunks(text, match string) []string {
+	var chunks []string
+	lines := osFriendlyNewlineSplit(text)
+
+	var currentChunk []string
+	for _, line := range lines {
+		trimmed := strings.TrimSpace(line)
+		if trimmed == "" {
+			if len(currentChunk) > 0 {
+				if chunkContains(currentChunk, match) {
+					chunk := strings.Join(currentChunk, "\n")
+					chunks = append(chunks, chunk)
+				}
+				currentChunk = []string{}
+			}
+		} else {
+			currentChunk = append(currentChunk, colorDiffLine(line))
+		}
+	}
+	return chunks
+}
 
 func shouldIgnore(info os.FileInfo) bool {
 	return info.IsDir() || info.Name() == ".new.yml"
@@ -31,6 +85,18 @@ func getAllFilePathsInDirectory(targetFolder string) []string {
 	return paths
 }
 
+func printChange(original, new, with string) {
+	ans := diff.Diff(original, new)
+
+	chunks := findInterestingChunks(ans, with)
+	for _, chunk := range chunks {
+		if strings.ContainsAny(chunk, "+-") {
+			fmt.Printf("\n%v\n", chunk)
+		}
+		fmt.Printf("\n")
+	}
+}
+
 func replaceInstancesInFile(targetFile string, instance string, with string) string {
 	ans := ""
 	bytes, err := ioutil.ReadFile(targetFile)
@@ -41,6 +107,13 @@ func replaceInstancesInFile(targetFile string, instance string, with string) str
 
 	if strings.Contains(str, instance) {
 		ans = strings.Replace(str, instance, with, -1)
+	}
+
+	if ans != "" {
+		c := color.New(color.FgBlack).Add(color.BgWhite)
+		output := c.Sprintf("%s :", targetFile)
+		fmt.Printf("%s\n", output)
+		printChange(str, ans, with)
 	}
 
 	return ans
@@ -59,9 +132,6 @@ func StartProcessWithString(targetString string, targetFolder string, with strin
 	for _, filePath := range files {
 		replacementText := replaceInstancesInFile(filePath, targetString, with)
 		if replacementText != "" {
-			// fmt.Printf("For file %s replacing '%s' with '%s'\n", filePath, targetString, with)
-			// fmt.Printf("Replaced:\n\n%s\n\n", replacementText)
-
 			overwriteFileWith(filePath, replacementText)
 		}
 	}
