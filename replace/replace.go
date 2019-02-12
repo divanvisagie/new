@@ -13,6 +13,13 @@ import (
 	"github.com/kylelemons/godebug/diff"
 )
 
+// Replacement represents a string that needs to be replaced and it's metadata
+type Replacement struct {
+	Match    string
+	FilePath string
+	With     string
+}
+
 func osFriendlyNewlineSplit(str string) []string {
 	return strings.Split(strings.Replace(str, "\r\n", "\n", -1), "\n")
 }
@@ -126,13 +133,18 @@ func overwriteFileWith(path string, with string) {
 	}
 }
 
-// StartProcessWithString starts the procces of replacing occurences of a string
-func StartProcessWithString(targetString string, targetFolder string, with string) {
-	files := getAllFilePathsInDirectory(targetFolder)
-	for _, filePath := range files {
-		replacementText := replaceInstancesInFile(filePath, targetString, with)
-		if replacementText != "" {
-			overwriteFileWith(filePath, replacementText)
+// StartReplacementProcess starts the process of replacing collected strings
+func StartReplacementProcess(replacements []Replacement, targetDirectory string) {
+	files := getAllFilePathsInDirectory(targetDirectory)
+
+	for _, r := range replacements {
+		fmt.Printf("Replacing string %v with %v...\n", r.Match, r.With)
+		for _, filePath := range files {
+			replacementText := replaceInstancesInFile(filePath, r.Match, r.With)
+			if replacementText != "" {
+				overwriteFileWith(filePath, replacementText)
+			}
 		}
 	}
+
 }
