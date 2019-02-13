@@ -7,9 +7,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-
-	"github.com/divanvisagie/new/printer"
-	"github.com/fatih/color"
 )
 
 // Replacement represents a string that needs to be replaced and it's metadata
@@ -64,13 +61,14 @@ func replaceInstancesInFile(targetFile string, replacements *[]Replacement) stri
 			workingText = newText
 		}
 	}
+	// TODO: Implement verbose mode
+	// if newText != "" {
+	// 	c := color.New(color.FgBlack).Add(color.BgWhite)
+	// 	output := c.Sprintf("%s :", targetFile)
+	// 	fmt.Printf("%s\n", output)
 
-	if newText != "" {
-		c := color.New(color.FgBlack).Add(color.BgWhite)
-		output := c.Sprintf("%s :", targetFile)
-		fmt.Printf("%s\n", output)
-		printer.PrintChange(originalText, newText)
-	}
+	// 	printer.PrintChange(originalText, newText)
+	// }
 
 	return newText
 }
@@ -86,7 +84,6 @@ func overwriteFileWith(path string, with string) {
 func StartReplacementProcess(replacements *[]Replacement, targetDirectory string) {
 	files := getAllFilePathsInDirectory(targetDirectory)
 
-	fmt.Printf("Replacing %v\n", replacements)
 	for _, filePath := range files {
 		replacementText := replaceInstancesInFile(filePath, replacements)
 		if replacementText != "" {
