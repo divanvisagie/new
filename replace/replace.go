@@ -6,37 +6,16 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"regexp"
 	"strings"
 
+	"github.com/divanvisagie/new/printer"
 	"github.com/fatih/color"
-	"github.com/kylelemons/godebug/diff"
 )
 
 // Replacement represents a string that needs to be replaced and it's metadata
 type Replacement struct {
-	Match    string
-	FilePath string
-	With     string
-}
-
-func osFriendlyNewlineSplit(str string) []string {
-	return strings.Split(strings.Replace(str, "\r\n", "\n", -1), "\n")
-}
-
-func colorDiffLine(str string) string {
-	add, _ := regexp.MatchString(`^\+.*`, str)
-	subtract, _ := regexp.MatchString(`^\-.*`, str)
-
-	if add {
-		return color.GreenString(str)
-	}
-
-	if subtract {
-		return color.RedString(str)
-	}
-
-	return str
+	Match string
+	With  string
 }
 
 func chunkContains(chunk []string, match string) bool {
@@ -46,28 +25,6 @@ func chunkContains(chunk []string, match string) bool {
 		}
 	}
 	return false
-}
-
-func findInterestingChunks(text, match string) []string {
-	var chunks []string
-	lines := osFriendlyNewlineSplit(text)
-
-	var currentChunk []string
-	for _, line := range lines {
-		trimmed := strings.TrimSpace(line)
-		if trimmed == "" {
-			if len(currentChunk) > 0 {
-				if chunkContains(currentChunk, match) {
-					chunk := strings.Join(currentChunk, "\n")
-					chunks = append(chunks, chunk)
-				}
-				currentChunk = []string{}
-			}
-		} else {
-			currentChunk = append(currentChunk, colorDiffLine(line))
-		}
-	}
-	return chunks
 }
 
 func shouldIgnore(info os.FileInfo) bool {
@@ -92,38 +49,30 @@ func getAllFilePathsInDirectory(targetFolder string) []string {
 	return paths
 }
 
-func printChange(original, new, with string) {
-	ans := diff.Diff(original, new)
-
-	chunks := findInterestingChunks(ans, with)
-	for _, chunk := range chunks {
-		if strings.ContainsAny(chunk, "+-") {
-			fmt.Printf("\n%v\n", chunk)
-		}
-		fmt.Printf("\n")
-	}
-}
-
-func replaceInstancesInFile(targetFile string, instance string, with string) string {
-	ans := ""
+func replaceInstancesInFile(targetFile string, replacements *[]Replacement) string {
+	newText := ""
 	bytes, err := ioutil.ReadFile(targetFile)
 	if err != nil {
 		fmt.Printf("Error: %s while replacing instances in file: %s", err.Error(), targetFile)
 	}
-	str := string(bytes)
+	originalText := string(bytes)
+	workingText := originalText
 
-	if strings.Contains(str, instance) {
-		ans = strings.Replace(str, instance, with, -1)
+	for _, r := range *replacements {
+		if strings.Contains(workingText, r.Match) {
+			newText = strings.Replace(workingText, r.Match, r.With, -1)
+			workingText = newText
+		}
 	}
 
-	if ans != "" {
+	if newText != "" {
 		c := color.New(color.FgBlack).Add(color.BgWhite)
 		output := c.Sprintf("%s :", targetFile)
 		fmt.Printf("%s\n", output)
-		printChange(str, ans, with)
+		printer.PrintChange(originalText, newText)
 	}
 
-	return ans
+	return newText
 }
 
 func overwriteFileWith(path string, with string) {
@@ -134,17 +83,14 @@ func overwriteFileWith(path string, with string) {
 }
 
 // StartReplacementProcess starts the process of replacing collected strings
-func StartReplacementProcess(replacements []Replacement, targetDirectory string) {
+func StartReplacementProcess(replacements *[]Replacement, targetDirectory string) {
 	files := getAllFilePathsInDirectory(targetDirectory)
 
-	for _, r := range replacements {
-		fmt.Printf("Replacing string %v with %v...\n", r.Match, r.With)
-		for _, filePath := range files {
-			replacementText := replaceInstancesInFile(filePath, r.Match, r.With)
-			if replacementText != "" {
-				overwriteFileWith(filePath, replacementText)
-			}
+	fmt.Printf("Replacing %v\n", replacements)
+	for _, filePath := range files {
+		replacementText := replaceInstancesInFile(filePath, replacements)
+		if replacementText != "" {
+			overwriteFileWith(filePath, replacementText)
 		}
 	}
-
 }

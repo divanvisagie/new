@@ -58,10 +58,9 @@ func ProcessForTarget(targetDirectory string, fetchUserInput func(string, string
 			return
 		}
 		replacements = append(replacements, replace.Replacement{
-			Match:    x.Match,
-			FilePath: targetDirectory,
-			With:     with,
+			Match: x.Match,
+			With:  with,
 		})
 	}
-	replace.StartReplacementProcess(replacements, targetDirectory)
+	replace.StartReplacementProcess(&replacements, targetDirectory)
 }
