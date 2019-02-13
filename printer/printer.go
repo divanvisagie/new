@@ -9,6 +9,14 @@ import (
 	"github.com/kylelemons/godebug/diff"
 )
 
+func detectNewline(text string) string {
+	win, _ := regexp.MatchString(`\r\n`, text)
+	if win {
+		return "\r\n"
+	}
+	return "\n"
+}
+
 func colorDiffLine(str string) string {
 	add, _ := regexp.MatchString(`^\+.*`, str)
 	subtract, _ := regexp.MatchString(`^\-.*`, str)
@@ -23,7 +31,8 @@ func colorDiffLine(str string) string {
 }
 
 func osFriendlyNewlineSplit(str string) []string {
-	return strings.Split(strings.Replace(str, "\r\n", "\n", -1), "\n")
+	nl := detectNewline(str)
+	return strings.Split(str, nl)
 }
 
 func prepareText(text string) string {
