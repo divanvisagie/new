@@ -33,7 +33,7 @@ func Test_readYamlFile(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := readYamlFile(tt.args.configFilePath); !reflect.DeepEqual(got, tt.want) {
+			if got := readConfigFile(tt.args.configFilePath); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("readYamlFile() = %v, want %v", got, tt.want)
 			}
 		})

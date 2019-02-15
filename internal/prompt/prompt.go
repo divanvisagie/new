@@ -10,6 +10,9 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+// Verbose determines if we should print more stuff
+var Verbose = false
+
 // NewConfig represents the whole config file
 type NewConfig struct {
 	Replace Replace `yaml:"replace"`
@@ -26,10 +29,10 @@ type ReplacementString struct {
 	Description string `yaml:"description"`
 }
 
-func readYamlFile(configFilePath string) *NewConfig {
+func readConfigFile(path string) *NewConfig {
 	config := NewConfig{}
 
-	b, err := ioutil.ReadFile(configFilePath)
+	b, err := ioutil.ReadFile(path)
 	if err != nil {
 		fmt.Printf("readYamlFile error: %v\n", err)
 	}
@@ -43,24 +46,24 @@ func readYamlFile(configFilePath string) *NewConfig {
 }
 
 // ProcessForTarget searches the target directory for .new.yml and processes it
-func ProcessForTarget(targetDirectory string, fetchUserInput func(string, string) string) {
-	const separator = string(os.PathSeparator)
+func ProcessForTarget(targetDirectory string, getUserInput func(match string, description string) string) {
+	const s = string(os.PathSeparator)
 
-	yamlFilePath := path.Join(targetDirectory, ".new.yml")
+	f := path.Join(targetDirectory, ".new.yml")
+	config := readConfigFile(f)
 
-	config := readYamlFile(yamlFilePath)
-
-	var replacements []replace.Replacement
+	var r []replace.Replacement
 	for _, x := range config.Replace.Strings {
-		with := fetchUserInput(x.Match, x.Description)
+		with := getUserInput(x.Match, x.Description)
 		if x.Match == with {
 			fmt.Printf("Skipped replacement for %s\n", x.Match)
 			return
 		}
-		replacements = append(replacements, replace.Replacement{
+		r = append(r, replace.Replacement{
 			Match: x.Match,
 			With:  with,
 		})
 	}
-	replace.StartReplacementProcess(&replacements, targetDirectory)
+	replace.Verbose = Verbose
+	replace.StartReplacementProcess(&r, targetDirectory)
 }

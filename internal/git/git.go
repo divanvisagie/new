@@ -17,16 +17,12 @@ type Args struct {
 }
 
 // GetArgs gets the arguments required for git
-func GetArgs(projectURL string, projectName string) *Args {
-
+func GetArgs(url string, projectName string) *Args {
 	dir, _ := os.Getwd()
-
 	target := strings.Join([]string{dir, projectName}, separator)
-	var url string
-	if strings.ContainsRune(projectURL, ':') {
-		url = projectURL
-	} else {
-		url = fmt.Sprintf("https://github.com/%s.git", projectURL)
+	// var url string
+	if !strings.ContainsRune(url, ':') {
+		url = fmt.Sprintf("https://github.com/%s.git", url)
 	}
 
 	fmt.Printf("Creating %s from %s \n", projectName, url)

@@ -4,9 +4,10 @@ go:
   - 1.11.2
 
 script: 
-  - make test
+  - go get ./...
   - make
   - make clean
+  - make test
  
 after_success:
   - go get "golang.org/x/sys/windows"

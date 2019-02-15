@@ -7,7 +7,13 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/divanvisagie/new/internal/printer"
+	"github.com/fatih/color"
 )
+
+// Verbose determines if we should print more stuff
+var Verbose = false
 
 // Replacement represents a string that needs to be replaced and it's metadata
 type Replacement struct {
@@ -61,14 +67,15 @@ func replaceInstancesInFile(targetFile string, replacements *[]Replacement) stri
 			workingText = newText
 		}
 	}
-	// TODO: Implement verbose mode
-	// if newText != "" {
-	// 	c := color.New(color.FgBlack).Add(color.BgWhite)
-	// 	output := c.Sprintf("%s :", targetFile)
-	// 	fmt.Printf("%s\n", output)
+	if Verbose {
+		if newText != "" {
+			c := color.New(color.FgBlack).Add(color.BgWhite)
+			output := c.Sprintf("%s :", targetFile)
+			fmt.Printf("%s\n", output)
 
-	// 	printer.PrintChange(originalText, newText)
-	// }
+			printer.PrintChange(originalText, newText)
+		}
+	}
 
 	return newText
 }
