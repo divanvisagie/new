@@ -16,10 +16,10 @@ func Test_getAllFilePathsInDirectory(t *testing.T) {
 	}{
 		{
 			name: "given test_data example tree",
-			args: args{"../test_data/example_tree"},
+			args: args{"../../test/testdata/example_tree"},
 			want: []string{
-				"../test_data/example_tree/onedeep/other_file.txt",
-				"../test_data/example_tree/test.txt",
+				"../../test/testdata/example_tree/onedeep/other_file.txt",
+				"../../test/testdata/example_tree/test.txt",
 			},
 		},
 	}

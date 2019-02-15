@@ -6,7 +6,7 @@ import (
 	"os"
 	"path"
 
-	"github.com/divanvisagie/new/replace"
+	"github.com/divanvisagie/new/internal/replace"
 	"gopkg.in/yaml.v2"
 )
 

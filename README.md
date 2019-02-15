@@ -1,7 +1,8 @@
 # new
-[![Build Status](https://img.shields.io/travis/divanvisagie/new/master.svg?style=for-the-badge)](https://travis-ci.org/divanvisagie/new)
-[![Release](https://img.shields.io/github/release/divanvisagie/new.svg?style=for-the-badge)](https://github.com/divanvisagie/new/releases/latest)
-[![Powered By: GoReleaser](https://img.shields.io/badge/powered%20by-goreleaser-green.svg?style=for-the-badge)](https://github.com/goreleaser)
+[![Build Status](https://img.shields.io/travis/divanvisagie/new/master.svg)](https://travis-ci.org/divanvisagie/new)
+[![Release](https://img.shields.io/github/release/divanvisagie/new.svg)](https://github.com/divanvisagie/new/releases/latest)
+[![Powered By: GoReleaser](https://img.shields.io/badge/powered%20by-goreleaser-green.svg)](https://github.com/goreleaser)
+[![Go Report Card](https://goreportcard.com/badge/github.com/divanvisagie/new)](https://goreportcard.com/report/github.com/divanvisagie/new)
 
 Generate new projects from git repositories
 
