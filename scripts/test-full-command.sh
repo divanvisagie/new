@@ -1,4 +1,6 @@
 #!/bin/bash
 
-go build
-./new testbed divanvisagie/kotlin-tested-seed
+make clean
+make
+cd test
+../new testbed divanvisagie/kotlin-tested-seed
