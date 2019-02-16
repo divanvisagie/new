@@ -16,15 +16,15 @@ type Container struct {
 }
 
 func isFlag(s string) bool {
-	match, _ := regexp.MatchString("--.*", s)
+	match, _ := regexp.MatchString("--.*|-.*", s)
 	return match
 }
 
 // Arg gets an arg by position, ignoring flags
 func (c *Container) Arg(position int) Targ {
 	for i := 0; i < len(c.Args); i++ {
-		match := isFlag(c.Args[i])
-		if match {
+		f := isFlag(c.Args[i])
+		if f {
 			position++
 		}
 		if i == position {
@@ -32,7 +32,6 @@ func (c *Container) Arg(position int) Targ {
 		}
 
 	}
-	println(position)
 	return Targ{
 		Arg: c.Args[position],
 	}

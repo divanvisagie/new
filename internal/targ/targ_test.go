@@ -94,6 +94,11 @@ func Test_isFlag(t *testing.T) {
 			args: args{"--verbose"},
 			want: true,
 		},
+		{
+			name: "given single flag",
+			args: args{"-v"},
+			want: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
