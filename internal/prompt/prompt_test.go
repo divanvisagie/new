@@ -15,7 +15,6 @@ func Test_readYamlFile(t *testing.T) {
 		args args
 		want *NewConfig
 	}{
-		// TODO: Add test cases.
 		{
 			name: "given test file",
 			args: args{"../../test/testdata/.new.yml"},

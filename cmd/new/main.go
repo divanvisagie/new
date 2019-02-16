@@ -21,7 +21,7 @@ var (
 	name = app.Arg("project name", "Name of the new project").Required().String()
 	seed = app.Arg("repository", "Custom git repo URL or GitHub <username>/<project>").Required().String()
 
-	verbose = app.Flag("verbose", "").Short('v').Bool()
+	verbose = app.Flag("verbose", "Verbose mode").Short('v').Bool()
 )
 
 func removeGitInDirectory(directoryName string) {
@@ -58,6 +58,9 @@ func fetchRepository(seed string, name string, getUserInput func(string, string)
 
 func main() {
 	prompt.Verbose = *verbose
+
+	fmt.Printf("verbose: %v\n", *verbose)
+
 	switch kingpin.MustParse(app.Parse(os.Args[1:])) {
 	default:
 		fetchRepository(*seed, *name, func(name string, description string) string {
