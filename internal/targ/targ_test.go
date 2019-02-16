@@ -48,9 +48,19 @@ func TestContainer_Arg(t *testing.T) {
 		want   Targ
 	}{
 		{
-			name: "given arg at position 0",
+			name: "given arg at position 0, should return arg",
 			fields: fields{
 				Args: []string{"myPositionalArg"},
+			},
+			args: args{0},
+			want: Targ{
+				Arg: "myPositionalArg",
+			},
+		},
+		{
+			name: "given flag first but arg at position 0, should return arg",
+			fields: fields{
+				Args: []string{"--verbose", "myPositionalArg"},
 			},
 			args: args{0},
 			want: Targ{
@@ -65,6 +75,30 @@ func TestContainer_Arg(t *testing.T) {
 			}
 			if got := c.Arg(tt.args.position); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Container.Arg() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_isFlag(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "given double flag",
+			args: args{"--verbose"},
+			want: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := isFlag(tt.args.s); got != tt.want {
+				t.Errorf("isFlag() = %v, want %v", got, tt.want)
 			}
 		})
 	}
