@@ -45,7 +45,7 @@ func TestContainer_Arg(t *testing.T) {
 		name   string
 		fields fields
 		args   args
-		want   Targ
+		want   *Targ
 	}{
 		{
 			name: "given arg at position 0, should return arg",
@@ -53,7 +53,7 @@ func TestContainer_Arg(t *testing.T) {
 				Args: []string{"myPositionalArg"},
 			},
 			args: args{0},
-			want: Targ{
+			want: &Targ{
 				Arg: "myPositionalArg",
 			},
 		},
@@ -63,7 +63,7 @@ func TestContainer_Arg(t *testing.T) {
 				Args: []string{"--verbose", "myPositionalArg"},
 			},
 			args: args{0},
-			want: Targ{
+			want: &Targ{
 				Arg: "myPositionalArg",
 			},
 		},
