@@ -16,8 +16,14 @@ Args:
 */
 
 import (
+	"fmt"
 	"regexp"
 )
+
+func isFlag(s string) bool {
+	match, _ := regexp.MatchString("^--.*|^-.*", s)
+	return match
+}
 
 // Targ is a typed wrapper around an argument
 type Targ struct {
@@ -45,16 +51,22 @@ func (t *Targ) String() string {
 // Container is the main storage container for all of this
 type Container struct {
 	Args        []string
+	Targs       []*Targ
+	Err         error
 	description string
-}
-
-func isFlag(s string) bool {
-	match, _ := regexp.MatchString("^--.*|^-.*", s)
-	return match
+	name        string
 }
 
 // Arg gets an arg by position, ignoring flags
 func (c *Container) Arg(position int) *Targ {
+	if len(c.Args) == 0 {
+		c.Err = fmt.Errorf("Unable to parse arguments becuase there were none")
+		t := &Targ{
+			Arg: "",
+		}
+		c.Targs = append(c.Targs, t)
+		return t
+	}
 	for i := 0; i < len(c.Args); i++ {
 		f := isFlag(c.Args[i])
 		if f {
@@ -64,9 +76,37 @@ func (c *Container) Arg(position int) *Targ {
 			break
 		}
 	}
-	return &Targ{
+	t := &Targ{
 		Arg: c.Args[position],
 	}
+	c.Targs = append(c.Targs, t)
+	return t
+}
+
+// Help get the help text
+func (c *Container) Help() string {
+	txt := fmt.Sprintf("usage: %s [<flags>]", c.name)
+	for _, arg := range c.Targs {
+		if !isFlag(arg.Arg) {
+			txt = fmt.Sprintf("%s <%s>", txt, arg.name)
+		}
+	}
+
+	txt = fmt.Sprintf("%s\n\n%s\n\nArgs:\n", txt, c.description)
+
+	for _, arg := range c.Targs {
+		if !isFlag(arg.Arg) {
+			txt = fmt.Sprintf("%s    <%s>    %s\n", txt, arg.name, arg.description)
+		}
+	}
+	txt = fmt.Sprintf("%s\n", txt)
+	return txt
+}
+
+// Name adds the container name for help printing
+func (c *Container) Name(s string) *Container {
+	c.name = s
+	return c
 }
 
 // Description adds description to container for help printing
@@ -77,7 +117,9 @@ func (c *Container) Description(s string) *Container {
 
 // NewContainer creates a new instance of Container from os args
 func NewContainer(args []string) *Container {
-	return &Container{
+	c := &Container{
 		Args: args,
 	}
+
+	return c
 }
