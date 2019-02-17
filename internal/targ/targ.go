@@ -25,6 +25,26 @@ func isFlag(s string) bool {
 	return match
 }
 
+func longestArg(args []string) int {
+	longest := 0
+	for _, arg := range args {
+		if !isFlag(arg) {
+			l := len(arg)
+			if l > longest {
+				longest = l
+			}
+		}
+	}
+	return longest
+}
+
+func padToSize(s string, size int) string {
+	for i := len(s); i < size; i++ {
+		s = fmt.Sprintf("%s ", s)
+	}
+	return s
+}
+
 // Targ is a typed wrapper around an argument
 type Targ struct {
 	Arg         string
@@ -96,7 +116,8 @@ func (c *Container) Help() string {
 
 	for _, arg := range c.Targs {
 		if !isFlag(arg.Arg) {
-			txt = fmt.Sprintf("%s    <%s>    %s\n", txt, arg.name, arg.description)
+			name := padToSize(fmt.Sprintf("<%s>", arg.name), 16)
+			txt = fmt.Sprintf("%s    %s    %s\n", txt, name, arg.description)
 		}
 	}
 	txt = fmt.Sprintf("%s\n", txt)

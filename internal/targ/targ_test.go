@@ -113,3 +113,54 @@ func Test_isFlag(t *testing.T) {
 		})
 	}
 }
+
+func Test_padToSize(t *testing.T) {
+	type args struct {
+		s    string
+		size int
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "given string of size 3",
+			args: args{"arg", 5},
+			want: "arg  ",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := padToSize(tt.args.s, tt.args.size); got != tt.want {
+				t.Errorf("padToSize() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_longestArg(t *testing.T) {
+	type args struct {
+		args []string
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "given 2 args arg, given",
+			args: args{
+				args: []string{"arg", "given"},
+			},
+			want: 5,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := longestArg(tt.args.args); got != tt.want {
+				t.Errorf("longestArg() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
