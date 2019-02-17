@@ -10,19 +10,19 @@ import (
 
 	"github.com/divanvisagie/new/internal/git"
 	"github.com/divanvisagie/new/internal/prompt"
-	kingpin "gopkg.in/alecthomas/kingpin.v2"
+	"github.com/divanvisagie/new/internal/targ"
 )
 
 const separator = string(os.PathSeparator)
 
-var (
-	app = kingpin.New("new", "generate projects from git repositories")
+// var (
+// 	app = kingpin.New("new", "generate projects from git repositories")
 
-	name = app.Arg("project name", "Name of the new project").Required().String()
-	seed = app.Arg("repository", "Custom git repo URL or GitHub <username>/<project>").Required().String()
+// 	name = app.Arg("project name", "Name of the new project").Required().String()
+// 	seed = app.Arg("repository", "Custom git repo URL or GitHub <username>/<project>").Required().String()
 
-	verbose = app.Flag("verbose", "Verbose mode").Short('v').Bool()
-)
+// 	verbose = app.Flag("verbose", "Verbose mode").Short('v').Bool()
+// )
 
 func removeGitInDirectory(directoryName string) {
 	gitPath := string(strings.Join([]string{directoryName, ".git"}, separator))
@@ -57,21 +57,40 @@ func fetchRepository(seed string, name string, getUserInput func(string, string)
 }
 
 func main() {
-	prompt.Verbose = *verbose
+	// prompt.Verbose = *verbose
 
-	fmt.Printf("verbose: %v\n", *verbose)
+	// fmt.Printf("verbose: %v\n", *verbose)
 
-	switch kingpin.MustParse(app.Parse(os.Args[1:])) {
-	default:
-		fetchRepository(*seed, *name, func(name string, description string) string {
-			reader := bufio.NewReader(os.Stdin)
-			fmt.Printf("\nEnter replacement text for %s\n\n    text       : %s\n    description: %s\n\n> ", name, name, description)
-			text, _ := reader.ReadString('\n')
-			text = strings.TrimSpace(text)
-			if text == "" {
-				text = name
-			}
-			return text
-		})
-	}
+	// switch kingpin.MustParse(app.Parse(os.Args[1:])) {
+	// default:
+	// 	fetchRepository(*seed, *name, func(name string, description string) string {
+	// 		reader := bufio.NewReader(os.Stdin)
+	// 		fmt.Printf("\nEnter replacement text for %s\n\n    text       : %s\n    description: %s\n\n> ", name, name, description)
+	// 		text, _ := reader.ReadString('\n')
+	// 		text = strings.TrimSpace(text)
+	// 		if text == "" {
+	// 			text = name
+	// 		}
+	// 		return text
+	// 	})
+	// }
+
+	fmt.Printf("supplied args %v\n", os.Args[1:])
+
+	c := targ.NewContainer(os.Args[1:])
+	c.Description("generate projects from git repositories")
+	name := c.Arg(0).Name("project name").Description("Name of your new project").String()
+	seed := c.Arg(1).Name("repository url").Description("Custom git repo URL or GitHub short: <username>/<project>").String()
+
+	fetchRepository(seed, name, func(name string, description string) string {
+		reader := bufio.NewReader(os.Stdin)
+		fmt.Printf("\nEnter replacement text for %s\n\n    text       : %s\n    description: %s\n\n> ", name, name, description)
+		text, _ := reader.ReadString('\n')
+		text = strings.TrimSpace(text)
+		if text == "" {
+			text = name
+		}
+		return text
+	})
+
 }

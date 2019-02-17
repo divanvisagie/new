@@ -99,6 +99,11 @@ func Test_isFlag(t *testing.T) {
 			args: args{"-v"},
 			want: true,
 		},
+		{
+			name: "given arg with dash",
+			args: args{"a-b"},
+			want: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
