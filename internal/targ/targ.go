@@ -20,7 +20,7 @@ import (
 	"regexp"
 )
 
-func getArgAtPosition(args []string, pos int) string {
+func getArgAtPosition(args []string, pos int) (string, error) {
 	for i := 0; i < len(args); i++ {
 		f := isFlag(args[i])
 		if f {
@@ -30,7 +30,10 @@ func getArgAtPosition(args []string, pos int) string {
 			break
 		}
 	}
-	return args[pos]
+	if pos <= len(args) {
+		return "", fmt.Errorf("There were not enough arguments")
+	}
+	return args[pos], nil
 }
 
 func isFlag(s string) bool {
@@ -111,7 +114,11 @@ func (c *Container) Parse() {
 
 	for i := 0; i < len(c.Targs); i++ {
 		p := c.Targs[i].position
-		c.Targs[i].Arg = getArgAtPosition(args, p)
+		arg, err := getArgAtPosition(args, p)
+		if err != nil {
+			c.Err = err
+		}
+		c.Targs[i].Arg = arg
 	}
 }
 
