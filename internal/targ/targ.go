@@ -20,6 +20,19 @@ import (
 	"regexp"
 )
 
+func getArgAtPosition(args []string, pos int) string {
+	for i := 0; i < len(args); i++ {
+		f := isFlag(args[i])
+		if f {
+			pos++
+		}
+		if i == pos {
+			break
+		}
+	}
+	return args[pos]
+}
+
 func isFlag(s string) bool {
 	match, _ := regexp.MatchString("^--.*|^-.*", s)
 	return match
@@ -86,19 +99,6 @@ func (c *Container) getArgs() []string {
 		}
 	}
 	return args
-}
-
-func getArgAtPosition(args []string, pos int) string {
-	for i := 0; i < len(args); i++ {
-		f := isFlag(args[i])
-		if f {
-			pos++
-		}
-		if i == pos {
-			break
-		}
-	}
-	return args[pos]
 }
 
 // Parse all the args in the container
