@@ -20,6 +20,13 @@ import (
 	"regexp"
 )
 
+func getFlag(flags []string, tflag *Tflag) (string, error) {
+	// for _, flag := flags {
+
+	// }
+	return "", nil
+}
+
 func getArgAtPosition(args []string, pos int) (string, error) {
 	for i := 0; i < len(args); i++ {
 		f := isFlag(args[i])
@@ -61,6 +68,40 @@ func padToSize(s string, size int) string {
 	return s
 }
 
+// Tflag is a typed wrapper around a flag
+type Tflag struct {
+	Arg         string //original flag is still an argument actually
+	name        string
+	short       string //short flag
+	description string
+}
+
+// Short is to supply a short flag
+func (t *Tflag) Short(s string) *Tflag {
+	t.short = s
+	return t
+}
+
+// Name give the Tflag a name for help printing
+func (t *Tflag) Name(s string) *Tflag {
+	t.name = s
+	return t
+}
+
+// Description sets the description for help printing
+func (t *Tflag) Description(s string) *Tflag {
+	t.description = s
+	return t
+}
+
+// Bool gets the boolean value of the flag
+func (t *Tflag) Bool() bool {
+	if t.Arg == t.name || t.Arg == t.short {
+		return true
+	}
+	return false
+}
+
 // Targ is a typed wrapper around an argument
 type Targ struct {
 	Arg         string
@@ -89,6 +130,7 @@ func (t *Targ) String() string {
 type Container struct {
 	Args        []string
 	Targs       []*Targ
+	Tflags      []*Tflag
 	Err         error
 	description string
 	name        string
@@ -104,10 +146,21 @@ func (c *Container) getArgs() []string {
 	return args
 }
 
+func (c *Container) getFlags() []string {
+	var flags []string
+	for _, x := range c.Args {
+		if isFlag(x) {
+			flags = append(flags, x)
+		}
+	}
+	return flags
+}
+
 // Parse all the args in the container
 func (c *Container) Parse() {
 
 	args := c.getArgs()
+	flags := c.getFlags()
 	if len(args) < len(c.Targs) {
 		c.Err = fmt.Errorf("There were not enough arguments")
 	}
@@ -120,6 +173,22 @@ func (c *Container) Parse() {
 		}
 		c.Targs[i].Arg = arg
 	}
+
+	for _, tflag := range c.Tflags {
+		flag, err := getFlag(flags, tflag)
+		if err != nil {
+			c.Err = err
+		}
+		tflag.Arg = flag
+	}
+
+}
+
+// Flag gets an argument by its flag
+func (c *Container) Flag() *Tflag {
+	t := &Tflag{}
+	c.Tflags = append(c.Tflags, t)
+	return t
 }
 
 // Arg gets an arg by position, ignoring flags

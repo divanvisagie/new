@@ -60,12 +60,18 @@ func main() {
 		Name("repository url").
 		Description("Custom git repo URL or GitHub short: <username>/<project>")
 
+	verbose := c.Flag().
+		Name("--verbose").
+		Short("-v")
+
 	c.Parse()
 
 	if c.Err != nil {
 		fmt.Print(c.Help())
 		return
 	}
+
+	prompt.Verbose = verbose.Bool()
 
 	fetchRepository(seed.String(), name.String(), func(name string, description string) string {
 		reader := bufio.NewReader(os.Stdin)
