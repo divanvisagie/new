@@ -30,7 +30,7 @@ func getArgAtPosition(args []string, pos int) (string, error) {
 			break
 		}
 	}
-	if pos <= len(args) {
+	if pos >= len(args) {
 		return "", fmt.Errorf("There were not enough arguments")
 	}
 	return args[pos], nil
