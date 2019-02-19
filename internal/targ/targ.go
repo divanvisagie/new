@@ -50,6 +50,7 @@ type Targ struct {
 	Arg         string
 	name        string
 	description string
+	position    int
 }
 
 // Name gives the targ a name for help printing
@@ -77,27 +78,47 @@ type Container struct {
 	name        string
 }
 
-// Arg gets an arg by position, ignoring flags
-func (c *Container) Arg(position int) *Targ {
-	if len(c.Args) == 0 {
-		c.Err = fmt.Errorf("Unable to parse arguments becuase there were none")
-		t := &Targ{
-			Arg: "",
+func (c *Container) getArgs() []string {
+	var args []string
+	for _, x := range c.Args {
+		if !isFlag(x) {
+			args = append(args, x)
 		}
-		c.Targs = append(c.Targs, t)
-		return t
 	}
-	for i := 0; i < len(c.Args); i++ {
-		f := isFlag(c.Args[i])
+	return args
+}
+
+func getArgAtPosition(args []string, pos int) string {
+	for i := 0; i < len(args); i++ {
+		f := isFlag(args[i])
 		if f {
-			position++
+			pos++
 		}
-		if i == position {
+		if i == pos {
 			break
 		}
 	}
+	return args[pos]
+}
+
+// Parse all the args in the container
+func (c *Container) Parse() {
+
+	args := c.getArgs()
+	if len(args) < len(c.Targs) {
+		c.Err = fmt.Errorf("There were not enough arguments")
+	}
+
+	for i := 0; i < len(c.Targs); i++ {
+		p := c.Targs[i].position
+		c.Targs[i].Arg = getArgAtPosition(args, p)
+	}
+}
+
+// Arg gets an arg by position, ignoring flags
+func (c *Container) Arg(position int) *Targ {
 	t := &Targ{
-		Arg: c.Args[position],
+		position: position,
 	}
 	c.Targs = append(c.Targs, t)
 	return t
@@ -114,9 +135,11 @@ func (c *Container) Help() string {
 
 	txt = fmt.Sprintf("%s\n\n%s\n\nArgs:\n", txt, c.description)
 
+	l := longestArg(c.getArgs())
+
 	for _, arg := range c.Targs {
 		if !isFlag(arg.Arg) {
-			name := padToSize(fmt.Sprintf("<%s>", arg.name), 16)
+			name := padToSize(fmt.Sprintf("<%s>", arg.name), l+2)
 			txt = fmt.Sprintf("%s    %s    %s\n", txt, name, arg.description)
 		}
 	}
@@ -141,6 +164,5 @@ func NewContainer(args []string) *Container {
 	c := &Container{
 		Args: args,
 	}
-
 	return c
 }

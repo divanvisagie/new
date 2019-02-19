@@ -54,20 +54,20 @@ func main() {
 
 	name := c.Arg(0).
 		Name("project name").
-		Description("Name of your new project").
-		String()
+		Description("Name of your new project")
 
 	seed := c.Arg(1).
 		Name("repository url").
-		Description("Custom git repo URL or GitHub short: <username>/<project>").
-		String()
+		Description("Custom git repo URL or GitHub short: <username>/<project>")
+
+	c.Parse()
 
 	if c.Err != nil {
 		fmt.Print(c.Help())
 		return
 	}
 
-	fetchRepository(seed, name, func(name string, description string) string {
+	fetchRepository(seed.String(), name.String(), func(name string, description string) string {
 		reader := bufio.NewReader(os.Stdin)
 		fmt.Printf("\nEnter replacement text for %s\n\n    text       : %s\n    description: %s\n\n> ", name, name, description)
 		text, _ := reader.ReadString('\n')
