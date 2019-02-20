@@ -232,10 +232,8 @@ func (c *Container) Help() string {
 	l := longestArg(c.Targs)
 
 	for _, arg := range c.Targs {
-		if !isFlag(arg.Arg) {
-			name := padToSize(fmt.Sprintf("<%s>", arg.name), l+2)
-			txt = fmt.Sprintf("%s    %s    %s\n", txt, name, arg.description)
-		}
+		name := padToSize(fmt.Sprintf("<%s>", arg.name), l+2)
+		txt = fmt.Sprintf("%s    %s    %s\n", txt, name, arg.description)
 	}
 
 	txt = fmt.Sprintf("%s\n\nFlags:\n", txt)
