@@ -70,8 +70,6 @@ func main() {
 
 	c.Parse()
 
-	fmt.Printf("%v --- \n", help.Bool())
-
 	if help.Bool() == true {
 		fmt.Print(c.Help())
 		return
