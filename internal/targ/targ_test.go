@@ -34,52 +34,6 @@ func TestNewContainer(t *testing.T) {
 	}
 }
 
-func TestContainer_Arg(t *testing.T) {
-	type fields struct {
-		Args []string
-	}
-	type args struct {
-		position int
-	}
-	tests := []struct {
-		name   string
-		fields fields
-		args   args
-		want   *Targ
-	}{
-		{
-			name: "given arg at position 0, should return arg",
-			fields: fields{
-				Args: []string{"myPositionalArg"},
-			},
-			args: args{0},
-			want: &Targ{
-				Arg: "myPositionalArg",
-			},
-		},
-		{
-			name: "given flag first but arg at position 0, should return arg",
-			fields: fields{
-				Args: []string{"--verbose", "myPositionalArg"},
-			},
-			args: args{0},
-			want: &Targ{
-				Arg: "myPositionalArg",
-			},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			c := &Container{
-				Args: tt.fields.Args,
-			}
-			if got := c.Arg(tt.args.position); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Container.Arg() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func Test_isFlag(t *testing.T) {
 	type args struct {
 		s string
@@ -134,32 +88,6 @@ func Test_padToSize(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := padToSize(tt.args.s, tt.args.size); got != tt.want {
 				t.Errorf("padToSize() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func Test_longestArg(t *testing.T) {
-	type args struct {
-		args []string
-	}
-	tests := []struct {
-		name string
-		args args
-		want int
-	}{
-		{
-			name: "given 2 args arg, given",
-			args: args{
-				args: []string{"arg", "given"},
-			},
-			want: 5,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := longestArg(tt.args.args); got != tt.want {
-				t.Errorf("longestArg() = %v, want %v", got, tt.want)
 			}
 		})
 	}
