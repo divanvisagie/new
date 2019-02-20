@@ -98,3 +98,9 @@ Use either the debian package or the tarball
 ### Manual Installation
 
 Download the latest [tar.gz](https://github.com/divanvisagie/new/releases) and run `install.sh`
+
+### Development
+
+```sh
+goreleaser --skip-validate --skip-publish --rm-dist
+```
