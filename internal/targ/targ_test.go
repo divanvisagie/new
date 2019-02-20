@@ -164,3 +164,56 @@ func Test_longestArg(t *testing.T) {
 		})
 	}
 }
+
+func TestTflag_Bool(t *testing.T) {
+	type fields struct {
+		Arg         string
+		name        string
+		short       string
+		description string
+	}
+	tests := []struct {
+		name   string
+		fields *Tflag
+		want   bool
+	}{
+		{
+			name: "given flag --help",
+			fields: &Tflag{
+				Arg:         "--help",
+				name:        "--help",
+				description: "",
+				short:       "-h",
+			},
+			want: true,
+		},
+		{
+			name: "given flag but no arg",
+			fields: &Tflag{
+				Arg:         "",
+				name:        "--targ",
+				description: "",
+				short:       "-t",
+			},
+			want: false,
+		},
+		{
+			name: "given short arg",
+			fields: &Tflag{
+				Arg:         "-h",
+				name:        "--help",
+				short:       "-h",
+				description: "",
+			},
+			want: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tf := tt.fields
+			if got := tf.Bool(); got != tt.want {
+				t.Errorf("Tflag.Bool() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

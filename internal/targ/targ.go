@@ -21,9 +21,11 @@ import (
 )
 
 func getFlag(flags []string, tflag *Tflag) (string, error) {
-	// for _, flag := flags {
-
-	// }
+	for _, flag := range flags {
+		if flag == tflag.name || flag == tflag.short {
+			return flag, nil
+		}
+	}
 	return "", nil
 }
 

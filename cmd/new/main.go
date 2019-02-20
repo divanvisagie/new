@@ -64,7 +64,18 @@ func main() {
 		Name("--verbose").
 		Short("-v")
 
+	help := c.Flag().
+		Name("--help").
+		Short("-h")
+
 	c.Parse()
+
+	fmt.Printf("%v --- \n", help.Bool())
+
+	if help.Bool() == true {
+		fmt.Print(c.Help())
+		return
+	}
 
 	if c.Err != nil {
 		fmt.Print(c.Help())
