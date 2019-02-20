@@ -62,11 +62,13 @@ func main() {
 
 	verbose := c.Flag().
 		Name("--verbose").
-		Short("-v")
+		Short("-v").
+		Description("Display extra information, such as diffs")
 
 	help := c.Flag().
 		Name("--help").
-		Short("-h")
+		Short("-h").
+		Description("Show help")
 
 	c.Parse()
 

@@ -50,14 +50,22 @@ func isFlag(s string) bool {
 	return match
 }
 
-func longestArg(args []string) int {
+func longestArg(args []*Targ) int {
 	longest := 0
 	for _, arg := range args {
-		if !isFlag(arg) {
-			l := len(arg)
-			if l > longest {
-				longest = l
-			}
+		l := len(arg.getName())
+		if l > longest {
+			longest = l
+		}
+	}
+	return longest
+}
+func longestFlag(args []*Tflag) int {
+	longest := 0
+	for _, arg := range args {
+		l := len(arg.getName())
+		if l > longest {
+			longest = l
 		}
 	}
 	return longest
@@ -76,6 +84,10 @@ type Tflag struct {
 	name        string
 	short       string //short flag
 	description string
+}
+
+func (t *Tflag) getName() string {
+	return t.name
 }
 
 // Short is to supply a short flag
@@ -110,6 +122,10 @@ type Targ struct {
 	name        string
 	description string
 	position    int
+}
+
+func (t *Targ) getName() string {
+	return t.name
 }
 
 // Name gives the targ a name for help printing
@@ -213,13 +229,21 @@ func (c *Container) Help() string {
 
 	txt = fmt.Sprintf("%s\n\n%s\n\nArgs:\n", txt, c.description)
 
-	l := longestArg(c.getArgs())
+	l := longestArg(c.Targs)
 
 	for _, arg := range c.Targs {
 		if !isFlag(arg.Arg) {
 			name := padToSize(fmt.Sprintf("<%s>", arg.name), l+2)
 			txt = fmt.Sprintf("%s    %s    %s\n", txt, name, arg.description)
 		}
+	}
+
+	txt = fmt.Sprintf("%s\n\nFlags:\n", txt)
+	l = longestFlag(c.Tflags)
+
+	for _, flag := range c.Tflags {
+		name := padToSize(fmt.Sprintf("%s, %s", flag.short, flag.name), l+4)
+		txt = fmt.Sprintf("%s    %s    %s\n", txt, name, flag.description)
 	}
 	txt = fmt.Sprintf("%s\n", txt)
 	return txt
