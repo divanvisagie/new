@@ -50,20 +50,10 @@ func isFlag(s string) bool {
 	return match
 }
 
-func longestArg(args []*Targ) int {
+func longestName(args []string) int {
 	longest := 0
 	for _, arg := range args {
-		l := len(arg.getName())
-		if l > longest {
-			longest = l
-		}
-	}
-	return longest
-}
-func longestFlag(args []*Tflag) int {
-	longest := 0
-	for _, arg := range args {
-		l := len(arg.getName())
+		l := len(arg)
 		if l > longest {
 			longest = l
 		}
@@ -174,6 +164,18 @@ func (c *Container) getFlags() []string {
 	return flags
 }
 
+func (c *Container) getAllArgNames() []string {
+	var names []string
+	for _, t := range c.Targs {
+		names = append(names, t.name)
+	}
+
+	for _, t := range c.Tflags {
+		names = append(names, t.name)
+	}
+	return names
+}
+
 // Parse all the args in the container
 func (c *Container) Parse() {
 
@@ -229,7 +231,7 @@ func (c *Container) Help() string {
 
 	txt = fmt.Sprintf("%s\n\n%s\n\nArgs:\n", txt, c.description)
 
-	l := longestArg(c.Targs)
+	l := longestName(c.getAllArgNames())
 
 	for _, arg := range c.Targs {
 		name := padToSize(fmt.Sprintf("<%s>", arg.name), l+2)
@@ -237,10 +239,9 @@ func (c *Container) Help() string {
 	}
 
 	txt = fmt.Sprintf("%s\n\nFlags:\n", txt)
-	l = longestFlag(c.Tflags)
 
 	for _, flag := range c.Tflags {
-		name := padToSize(fmt.Sprintf("%s, %s", flag.short, flag.name), l+4)
+		name := padToSize(fmt.Sprintf("%s, %s", flag.short, flag.name), l+2)
 		txt = fmt.Sprintf("%s    %s    %s\n", txt, name, flag.description)
 	}
 	txt = fmt.Sprintf("%s\n", txt)
