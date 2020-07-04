@@ -2,12 +2,10 @@
 import argparse
 import sys
 from os.path import dirname, join, abspath
+from repo import fetch_code
 
 root = abspath(join(dirname(__file__), '.')) # The root of this file
 
-def fetch_code(project, url):
-    command = f'git clone {url}.git {project}'
-    system(command)
     
 # Command line interface
 
