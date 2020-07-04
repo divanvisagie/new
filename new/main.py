@@ -2,8 +2,9 @@
 import argparse
 import sys
 from os.path import dirname, join, abspath
-from new.repo import fetch_code, ungitify, complete_url
-from new.template import read
+from repo import fetch_code, ungitify, complete_url
+from template import read
+from replace import replace_strings
 
 root = abspath(join(dirname(__file__), '.')) # The root of this file
 
@@ -27,7 +28,8 @@ def main():
         ungitify(options.project)
     else:
         print('Preserving git history')
-    read(options.project)
+    stringmap = read(options.project)
+    replace_strings(options.project, stringmap)
     
 
 if __name__ == "__main__":

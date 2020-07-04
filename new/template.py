@@ -18,7 +18,8 @@ def read(project):
     try:
         with open(f'{project}/.new.yml') as file:
             f = yaml.load(file, Loader=yaml.FullLoader)
-            enter_loop_with(f)
+            mp = enter_loop_with(f)
+            return mp
     except:
         print('no template config to process')
 
