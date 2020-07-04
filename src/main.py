@@ -3,6 +3,7 @@ import argparse
 import sys
 from os.path import dirname, join, abspath
 from repo import fetch_code, ungitify, complete_url
+from template import read
 
 root = abspath(join(dirname(__file__), '.')) # The root of this file
 
@@ -26,6 +27,8 @@ def main():
         ungitify(options.project)
     else:
         print('Preserving git history')
+    read(options.project)
+    
 
 if __name__ == "__main__":
     main()

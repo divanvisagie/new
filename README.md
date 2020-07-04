@@ -64,13 +64,6 @@ You can configure as many match strings as you want in your own seed projects.
 
 ## Installation Options
 
-### Go get
-If you have golang installed , you can simply run the following on any platform:
-
-```sh
-go get github.com/divanvisagie/new
-```
-
 ### Windows 
 
 First install [scoop](http://scoop.sh/)
@@ -99,7 +92,9 @@ Use either the debian package or the tarball
 
 Download the latest [tar.gz](https://github.com/divanvisagie/new/releases) and run `install.sh`
 
-### Development
+# Development
+
+Tests are run with `tox`
 
 ```sh
 goreleaser --skip-validate --skip-publish --rm-dist
