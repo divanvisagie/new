@@ -62,6 +62,12 @@ You can configure as many match strings as you want in your own seed projects.
 
 ## Installation Options
 
+### PyPi
+
+```sh
+pip install new-project
+```
+
 ### Windows 
 
 First install [scoop](http://scoop.sh/)

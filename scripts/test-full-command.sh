@@ -4,4 +4,4 @@
 # make
 # cd test
 # rm -rf ./test/testdata/testbed
-python ./src/main.py testbed https://github.com/divanvisagie/kotlin-tested-seed
+python ./new/new.py testbed https://github.com/divanvisagie/kotlin-tested-seed

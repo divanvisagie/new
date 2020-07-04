@@ -2,8 +2,8 @@
 import argparse
 import sys
 from os.path import dirname, join, abspath
-from repo import fetch_code, ungitify, complete_url
-from template import read
+from new.repo import fetch_code, ungitify, complete_url
+from new.template import read
 
 root = abspath(join(dirname(__file__), '.')) # The root of this file
 

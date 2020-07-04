@@ -1,6 +1,6 @@
 import pytest
 
-from template import read, enter_loop_with
+from new.template import read, enter_loop_with
 
 def test_given_template_user_is_prompted_twice():
     called_count = 0
