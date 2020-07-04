@@ -3,3 +3,4 @@ testbed
 dist
 .DS_Store
 env
+.vscode
