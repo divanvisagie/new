@@ -4,7 +4,6 @@ def get_file_paths(directory):
     paths = []
     for root, dirs, files in os.walk(directory):
         for file in files:
-            print(f'--- {root}/{file}')
             p = os.path.join(root, file)
             paths.append(p)
     print(f'found paths: {paths}')
