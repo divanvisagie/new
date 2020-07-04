@@ -1,8 +1,6 @@
 # new
 [![Build](https://github.com/divanvisagie/new/workflows/Python%20Package%20Tests/badge.svg?branch=main)](https://github.com/divanvisagie/new/actions?query=workflow%3A%22Python+Package+Tests%22)
 [![Release](https://img.shields.io/github/release/divanvisagie/new.svg)](https://github.com/divanvisagie/new/releases/latest)
-[![Powered By: GoReleaser](https://img.shields.io/badge/powered%20by-goreleaser-green.svg)](https://github.com/goreleaser)
-[![Go Report Card](https://goreportcard.com/badge/github.com/divanvisagie/new)](https://goreportcard.com/report/github.com/divanvisagie/new)
 
 Generate new projects from git repositories
 
