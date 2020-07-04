@@ -4,14 +4,15 @@
 
 Generate new projects from git repositories
 
-new is a command to create new projects based on existing git repos. It simply shallow clones a repository to a directory with your specified new project name, and cleans up the git files like they were never there. It also supports string replacement.
+new is a command to create new projects based on existing git repos. It simply shallow clones a repository to a directory with your specified new project name, and cleans up the git files like they were never there. It also supports 1:1 string replacement.
 
 
 ## Usage
 
 You can create new project from any github repository with just the username and project name
 
-The following command will create a new project for you based on this one:
+The following command will create a new project for you based on this one, if you do not provide a full
+git url it will default to GitHub:
 ```sh
 new myNewProject divanvisagie/new
 ```
@@ -55,7 +56,7 @@ The reason we see this is because the `kotlin-tested-seed` repository contains a
 replace:
   strings:
     - match: com.divanvisagie.example
-      description: The package name 
+      description: The package name
 ```
 
 You can configure as many match strings as you want in your own seed projects.
@@ -68,38 +69,17 @@ You can configure as many match strings as you want in your own seed projects.
 pip install new-project
 ```
 
-### Windows 
-
-First install [scoop](http://scoop.sh/)
-
-```sh
-scoop bucket add divanvisagie https://github.com/divanvisagie/scoop-bucket
-scoop install new
-```
-
-### macOS
-
-First install [homebrew](https://brew.sh/)
-
-```sh
-brew tap divanvisagie/homebrew-tap
-brew install divanvisagie/homebrew-tap/new
-```
-
-### Linux
-
-Download the appropriate package from [here](https://github.com/divanvisagie/new/releases).
-
-Use either the debian package or the tarball
-
-### Manual Installation
-
-Download the latest [tar.gz](https://github.com/divanvisagie/new/releases) and run `install.sh`
-
 # Development
 
-Tests are run with `tox`
+Set up the python environment with:
 
 ```sh
-goreleaser --skip-validate --skip-publish --rm-dist
+python -m venv env
 ```
+
+Install dependencies
+```
+pip install -r requirements.txt
+```
+
+Tests are run with `pytest`
