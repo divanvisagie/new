@@ -13,8 +13,8 @@ def get_options(args=sys.argv[1:]):
     parser.add_argument('project', type=str, help='name of the project you want to create')
     parser.add_argument('url', type=str, help='url of the repository you want to base this project on')
     parser.add_argument('-p', '--preserve', dest='preserve', action='store_true' ,help='preserve the git history of the template')
-    parser.add_argument('-v', '--verbose', dest='verbose', action='store_true', help='display extra information such as diffs')
-    parser.add_argument('-k', '--keep', dest='keep', action='store_true', help='keep the .new.yml config file')
+    # parser.add_argument('-v', '--verbose', dest='verbose', action='store_true', help='display extra information such as diffs')
+    # parser.add_argument('-k', '--keep', dest='keep', action='store_true', help='keep the .new.yml config file')
     return parser.parse_args(args)
 
 def print_repo_details(project_name, git_url):

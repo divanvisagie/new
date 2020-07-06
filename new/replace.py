@@ -18,10 +18,10 @@ def replace_strings(project, strings):
     for current_file_path in get_file_paths(project):
         try:
             with open(current_file_path, 'r+') as f:
-                print(f'Opened: {current_file_path}')
+                # print(f'opened: {current_file_path}')
                 old = f.read() # read everything in the file
                 print(old)
-                print('Changed to')
+                # print('Changed to')
                 for pair in strings:
                     old = replace_match(pair, old)
                 print(old)
@@ -29,4 +29,4 @@ def replace_strings(project, strings):
                 f.write(old) # write the new line before
                 f.truncate() # cut off any remainign text from the old file
         except Exception as e:
-            print("Oops!", e, "occurred.")
+            print('Error: ', e, 'occurred.')
