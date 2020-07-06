@@ -6,6 +6,15 @@ Generate new projects from git repositories
 
 new is a command to create new projects based on existing git repos. It simply shallow clones a repository to a directory with your specified new project name, and cleans up the git files like they were never there. It also supports 1:1 string replacement.
 
+## Installation Options
+
+https://pypi.org/project/new-project/
+
+### PyPi
+
+```sh
+pip install new-project
+```
 
 ## Usage
 
@@ -61,13 +70,7 @@ replace:
 
 You can configure as many match strings as you want in your own seed projects.
 
-## Installation Options
 
-### PyPi
-
-```sh
-pip install new-project
-```
 
 # Development
 
