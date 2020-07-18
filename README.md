@@ -1,6 +1,7 @@
 # new
 [![Build](https://github.com/divanvisagie/new/workflows/Python%20Package%20Tests/badge.svg?branch=main)](https://github.com/divanvisagie/new/actions?query=workflow%3A%22Python+Package+Tests%22)
 [![Release](https://img.shields.io/github/release/divanvisagie/new.svg)](https://github.com/divanvisagie/new/releases/latest)
+[![PyPI version](https://badge.fury.io/py/new-project.svg)](https://badge.fury.io/py/new-project)
 
 Generate new projects from git repositories
 
