@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='new-project', # Replace with your own username
-    version='0.5.2',
+    version='0.5.3',
     author='Divan Visagie',
     author_email='me@dvisagie.com',
     description='Generate new projects from git repositories',
@@ -23,5 +23,8 @@ setuptools.setup(
             'new = new.__main__:main'
         ]
     },
+    install_requires=[
+        'pyaml',
+    ],
     python_requires='>=3.6',
 )
