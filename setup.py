@@ -24,7 +24,7 @@ setuptools.setup(
         ]
     },
     install_requires=[
-        'pyaml',
+        'PyYAML',
     ],
     python_requires='>=3.6',
 )
