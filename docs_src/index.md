@@ -1,10 +1,10 @@
-# The New Project
+# Introduction 
 
 `new` is a command line tool that lets you use any git repository as a project template.
 
-## Installing new
+## Installing
 
-New is written in Python and is available as the pip package [new-project](https://pypi.org/project/new-project/)
+New is currently available as the [pip](https://packaging.python.org/tutorials/installing-packages/) package [new-project](https://pypi.org/project/new-project/)
 
 ```python
 pip install new-project
