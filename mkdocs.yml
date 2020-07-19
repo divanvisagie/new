@@ -1,0 +1,17 @@
+site_name: new
+site_url: https://dvisagie.com/new
+theme:
+  name: material
+  palette:
+    primary: blue
+    accent: orange
+  icon:
+    repo: fontawesome/brands/github-alt
+docs_dir: docs_src
+site_dir: docs
+repo_name: divanvisagie/new
+repo_url: https://github.com/divanvisagie/new
+markdown_extensions:
+  - codehilite
+nav:
+- Getting Started: index.md
