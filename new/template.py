@@ -22,5 +22,6 @@ def read(project):
             return mp
     except:
         print('no template config to process')
+        return []
 
     

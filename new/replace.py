@@ -20,13 +20,13 @@ def replace_strings(project, strings):
             with open(current_file_path, 'r+') as f:
                 # print(f'opened: {current_file_path}')
                 old = f.read() # read everything in the file
-                print(old)
+                # print(old)
                 # print('Changed to')
                 for pair in strings:
                     old = replace_match(pair, old)
-                print(old)
+                # print(old)
                 f.seek(0) # go to the beginning of the file
                 f.write(old) # write the new line before
                 f.truncate() # cut off any remainign text from the old file
         except Exception as e:
-            print('Error: ', e, 'occurred.')
+            print('Error in replace.replace_strings :', e, 'occurred.')

@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='new-project', # Replace with your own username
-    version='0.5.3',
+    version='0.5.4',
     author='Divan Visagie',
     author_email='me@dvisagie.com',
     description='Generate new projects from git repositories',
