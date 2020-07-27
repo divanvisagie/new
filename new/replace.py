@@ -1,4 +1,5 @@
 import os
+from fuzzywuzzy import process
 
 def get_file_paths(directory):
     paths = []
@@ -11,6 +12,11 @@ def get_file_paths(directory):
 def replace_match(match_tuple, contents):
     (match, replacement) = match_tuple
     return str.replace(contents, match, replacement)
+
+def name_in_line(line, name_to_find):
+    split_lines = line.split()
+    (lout, confidence) = process.extractOne(name_to_find, split_lines)
+    return lout.strip()
 
 def replace_strings(project, strings):
     for current_file_path in get_file_paths(project):
