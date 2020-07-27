@@ -13,7 +13,7 @@ def enter_loop_with(config, prompt=get_input):
     return replacement_map
 
 def read(project):
-    # Prompts the user for any template replacement requirements
+    # Reads .new.yml and Prompts the user for any template replacement requirements
     print(f'reading template for project: {project}')
     try:
         with open(f'{project}/.new.yml') as file:
