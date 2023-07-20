@@ -24,7 +24,7 @@ nltk==3.6.6
 packaging==20.4
 pluggy==0.13.1
 py==1.10.0
-Pygments==2.7.4
+Pygments==2.15.0
 PyInstaller==3.6
 pylint==2.5.3
 pymdown-extensions==10.0
