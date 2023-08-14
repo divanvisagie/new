@@ -35,7 +35,7 @@ PyYAML==5.4
 regex==2020.7.14
 six==1.15.0
 toml==0.10.1
-tornado==6.3.2
+tornado==6.3.3
 tox==3.16.1
 tqdm==4.48.0
 virtualenv==20.0.25
